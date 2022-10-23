@@ -13,12 +13,21 @@ class Loader:
     def process_input(self, path:str):
         lines = self.load_file(path)[6:-2]
         cities = []
-        for line in lines:
+        for count, line in enumerate(lines):
             try:
                 city_id, x, y = line.split(" ")
+                cities.append(City(int(float(city_id)), int(float(x)), int(float(y))))
             except ValueError:
-                city_id, x, y, _ = line.split(" ")
-            cities.append(City(int(float(city_id)), int(float(x)), int(float(y))))
+                if count != 0:
+                    print(line)
+                    line = ' '.join(line.split())
+                    try:
+                        city_id, x, y, _ = line.split(" ")
+                    except ValueError:
+                        city_id, x, y = line.split(" ")
+                    cities.append(City(int(float(city_id)), int(float(x)), int(float(y))))
+                            
+            
         matrix = np.empty((len(cities), len(cities)), dtype=int)
 
         for i in range(len(cities)):
